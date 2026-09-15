@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "site-infra-db"
+version = "0.1.0"
+description = "주소 기반 건축 사이트 인프라 좌표 데이터베이스"
+requires-python = ">=3.10"
+dependencies = ["Pillow>=10"]
+
+[project.scripts]
+site-infra = "site_infra.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
