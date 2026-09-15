@@ -67,6 +67,8 @@ def render_satellite_qa(
     cache_dir: str | Path = "data/cache/vworld/satellite",
     zoom: int = 16,
     view_radius_m: float | None = None,
+    base_output: str | Path | None = None,
+    metadata_output: str | Path | None = None,
 ) -> Path:
     site = conn.execute("SELECT * FROM sites ORDER BY updated_at DESC LIMIT 1").fetchone()
     if site is None:
@@ -101,6 +103,10 @@ def render_satellite_qa(
         round(right_px - origin_x), round(bottom_px - origin_y),
     )
     image = mosaic.crop(crop_box).convert("RGBA")
+    if base_output:
+        base_destination = Path(base_output)
+        base_destination.parent.mkdir(parents=True, exist_ok=True)
+        image.convert("RGB").save(base_destination, "PNG", optimize=True)
     draw = ImageDraw.Draw(image, "RGBA")
 
     def local_point(point_lon: float, point_lat: float) -> tuple[float, float]:
@@ -121,6 +127,48 @@ def render_satellite_qa(
         "SELECT * FROM facilities WHERE longitude IS NOT NULL ORDER BY distance_m, name"
     ))
     features = [(site, True)] + [(row, False) for row in rows]
+
+    if metadata_output:
+        def feature_payload(row: sqlite3.Row, is_site: bool) -> dict:
+            geometry = json.loads(row["parcel_geojson"]) if row["parcel_geojson"] else None
+            x, y = local_point(float(row["longitude"]), float(row["latitude"]))
+            return {
+                "id": row["id"],
+                "is_site": is_site,
+                "name": "대상지" if is_site else row["name"],
+                "category": "site" if is_site else row["category"],
+                "address": row["normalized_address"],
+                "longitude": row["longitude"],
+                "latitude": row["latitude"],
+                "pnu": row["pnu"],
+                "accuracy": row["accuracy"],
+                "distance_m": 0 if is_site else row["distance_m"],
+                "within_radius": True if is_site else bool(row["within_radius"]),
+                "source_url": "" if is_site else row["source_url"],
+                "x": x,
+                "y": y,
+                "parcel_rings": [
+                    [local_point(float(coord[0]), float(coord[1])) for coord in ring]
+                    for ring in _rings(geometry)
+                ],
+            }
+
+        metadata = {
+            "width": image.width,
+            "height": image.height,
+            "zoom": zoom,
+            "view_radius_m": extent_m,
+            "search_radius_m": radius_m,
+            "meters_per_pixel": meters_per_pixel,
+            "site_x": cx,
+            "site_y": cy,
+            "features": [feature_payload(row, is_site) for row, is_site in features],
+        }
+        metadata_destination = Path(metadata_output)
+        metadata_destination.parent.mkdir(parents=True, exist_ok=True)
+        metadata_destination.write_text(
+            json.dumps(metadata, ensure_ascii=False, indent=2), encoding="utf-8"
+        )
     for row, is_site in features:
         geometry = json.loads(row["parcel_geojson"]) if row["parcel_geojson"] else None
         color = (255, 70, 60, 245) if is_site else (50, 220, 255, 230)

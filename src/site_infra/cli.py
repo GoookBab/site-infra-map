@@ -60,6 +60,8 @@ def _parser() -> argparse.ArgumentParser:
     render.add_argument("--output", required=True)
     render.add_argument("--zoom", default=16, type=int)
     render.add_argument("--view-radius-m", type=float)
+    render.add_argument("--base-output")
+    render.add_argument("--metadata-output")
     return parser
 
 
@@ -126,7 +128,8 @@ def main() -> None:
         if not key:
             raise SystemExit("VWORLD_API_KEY 환경변수가 필요합니다.")
         path = render_satellite_qa(
-            conn, key, args.output, zoom=args.zoom, view_radius_m=args.view_radius_m
+            conn, key, args.output, zoom=args.zoom, view_radius_m=args.view_radius_m,
+            base_output=args.base_output, metadata_output=args.metadata_output,
         )
         print(f"rendered: {path}")
 

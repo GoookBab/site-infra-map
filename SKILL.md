@@ -41,7 +41,8 @@ If VWorld reports a domain/authentication error, make the registered domain and 
 3. Research facility names and complete street/parcel addresses. Prefer official institution, municipal, education-office, or public-data pages. Store the source URL with every record.
 4. Import the research CSV and geocode it against the registered site.
 5. Accept `parcel_verified` records for automatic plotting. Inspect `address_matched`, `review_required`, and `not_found` records before presentation use.
-6. Export the normalized table and render an overview plus a high-zoom site detail. Visually confirm that parcel outlines and points agree with the satellite image.
+6. Export the normalized table and render an overview plus a high-zoom site detail. When an editable presentation is required, also export the clean satellite base and map metadata.
+7. Build the PowerPoint only after coordinate QA. Keep the satellite image as a raster base and make radius rings, points, labels, explanatory text, and data tables native editable slide objects.
 
 ```powershell
 python scripts/site_infra.py init-db --db data/site_infra.sqlite3
@@ -49,7 +50,7 @@ python scripts/site_infra.py set-site --db data/site_infra.sqlite3 --address "ì„
 python scripts/site_infra.py import-csv --db data/site_infra.sqlite3 --csv data/research_sample.csv
 python scripts/site_infra.py geocode --db data/site_infra.sqlite3 --site-lat 37.48400064 --site-lon 127.12191138 --radius-m 2000
 python scripts/site_infra.py export-csv --db data/site_infra.sqlite3 --output outputs/facilities.csv
-python scripts/site_infra.py render-map --db data/site_infra.sqlite3 --output outputs/satellite_qa_overview.png --zoom 16
+python scripts/site_infra.py render-map --db data/site_infra.sqlite3 --output outputs/satellite_qa_overview.png --base-output outputs/satellite_base_overview.png --metadata-output outputs/satellite_overview.json --zoom 16
 python scripts/site_infra.py render-map --db data/site_infra.sqlite3 --output outputs/satellite_qa_site_detail.png --zoom 19 --view-radius-m 180
 ```
 
@@ -66,7 +67,7 @@ Do not describe `parcel_verified` as an exact entrance, building centroid, or fa
 
 ## Deliverables
 
-Return the SQLite database, exported CSV, overview QA image, detail QA image, counts by verification status, excluded out-of-radius records, and any unresolved records requiring review. Keep source URLs and raw VWorld responses in the database for auditability.
+Return the SQLite database, exported CSV, overview QA image, detail QA image, counts by verification status, excluded out-of-radius records, and any unresolved records requiring review. When requested, also return an editable PPTX built from the clean satellite base and metadata JSON. Keep source URLs and raw VWorld responses in the database and slide speaker notes for auditability.
 
 For code changes, run:
 
