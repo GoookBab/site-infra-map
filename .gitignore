@@ -9,5 +9,6 @@ outputs/
 .pptx-build/
 .codex-finalizer/
 assets/facilities/*.jpg
+assets/projects/
 assets/fonts/
 deliverables/*.pptx

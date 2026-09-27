@@ -1,11 +1,11 @@
 ---
 name: site-infra-map
-description: Build a reusable Korean architectural site-infrastructure database from researched facility addresses, verify coordinates against VWorld parcel geometry, filter by radius, and render exact QA overlays on VWorld satellite imagery. Use for site analysis, nearby-infrastructure mapping, address geocoding, parcel verification, or preparing map data for architectural presentations in South Korea.
+description: Turn a Korean architectural site address and sourced school or facility records into a VWorld parcel-verified database, satellite QA maps, and an editable PowerPoint site-analysis deck. Use for repeatable nearby-infrastructure research and presentation workflows; do not use it as a substitute for sourcing facility facts or image rights.
 ---
 
 # Site Infrastructure Map
 
-Turn a Korean site address and researched facility addresses into an auditable spatial database and satellite QA maps. Treat visual styling and presentation templates as a later step; first make the coordinates, parcels, sources, and radius decisions reproducible.
+Turn a Korean site address and researched facility records into an auditable spatial database, satellite QA maps, and a two-slide editable PowerPoint analysis. Keep research, coordinate verification, and presentation generation as separate traceable stages.
 
 ## Required setup
 
@@ -34,27 +34,28 @@ VWORLD_DOMAIN=http://localhost
 
 If VWorld reports a domain/authentication error, make the registered domain and `VWORLD_DOMAIN` identical, including scheme and port when applicable. Manage or rotate the key in VWorld rather than placing it in source code.
 
+## Project configuration
+
+Create a project JSON rather than editing scripts. Read [references/project-config.md](references/project-config.md) when creating or changing a project configuration. Start from `examples/munjeong-project.json`.
+
+The configuration is the evidence contract. Every school and facility needs a complete address and source URL. Student counts need an integer and cited source. Facility photographs need a local path plus the image-source page. Optional coordinates are fallbacks only; prefer the pipeline's VWorld result.
+
 ## Workflow
 
-1. Confirm the target address, radius, and facility categories. If radius is omitted, state the working assumption before using it.
-2. Register the site. This geocodes the road address, resolves its PNU and parcel polygon, and stores a verification status.
-3. Research facility names and complete street/parcel addresses. Prefer official institution, municipal, education-office, or public-data pages. Store the source URL with every record.
-4. Import the research CSV and geocode it against the registered site.
-5. Accept `parcel_verified` records for automatic plotting. Inspect `address_matched`, `review_required`, and `not_found` records before presentation use.
-6. Export the normalized table and render an overview plus a high-zoom site detail. When an editable presentation is required, also export the clean satellite base and map metadata.
-7. Build the PowerPoint only after coordinate QA. Keep the satellite image as a raster base and make radius rings, points, labels, explanatory text, and data tables native editable slide objects.
+1. Research names, complete addresses, student counts, official source URLs, and image sources. Do not invent missing attributes.
+2. Validate the project JSON before network calls.
+3. Run the project pipeline. It creates a new timestamped run directory, so earlier databases and maps remain intact.
+4. Review `facilities.csv` and the overview and detail QA images. Resolve `review_required` and `not_found` records before using the deck as final evidence.
+5. Generate the PowerPoint from the clean satellite base and metadata. Keep its table, radius, points, labels, and text editable. Keep the satellite base and photographs as images.
 
 ```powershell
-python scripts/site_infra.py init-db --db data/site_infra.sqlite3
-python scripts/site_infra.py set-site --db data/site_infra.sqlite3 --address "서울특별시 송파구 법원로8길 8" --radius-m 2000
-python scripts/site_infra.py import-csv --db data/site_infra.sqlite3 --csv data/research_sample.csv
-python scripts/site_infra.py geocode --db data/site_infra.sqlite3 --site-lat 37.48400064 --site-lon 127.12191138 --radius-m 2000
-python scripts/site_infra.py export-csv --db data/site_infra.sqlite3 --output outputs/facilities.csv
-python scripts/site_infra.py render-map --db data/site_infra.sqlite3 --output outputs/satellite_qa_overview.png --base-output outputs/satellite_base_overview.png --metadata-output outputs/satellite_overview.json --zoom 16
-python scripts/site_infra.py render-map --db data/site_infra.sqlite3 --output outputs/satellite_qa_site_detail.png --zoom 19 --view-radius-m 180
+python scripts/run_project.py --config examples/munjeong-project.json --validate-only
+python scripts/run_project.py --config examples/munjeong-project.json
 ```
 
-The research CSV requires `name`, `category`, and `address`; `source_url` is optional but should normally be populated.
+Before the full command, set the VWorld variables. In Codex, also load the presentation runtime and set `RUNTIME_NODE`, `RUNTIME_NODE_MODULES`, `RUNTIME_PYTHON`, and `PRESENTATIONS_SKILL_DIR`. If that runtime is unavailable, run with `--skip-ppt` and retain all spatial outputs.
+
+The low-level CSV importer accepts `name`, `category`, and `address`, but the reusable project configuration also requires `source_url` so every plotted record remains auditable.
 
 ## Accuracy contract
 
@@ -65,9 +66,11 @@ The research CSV requires `name`, `category`, and `address`; `source_url` is opt
 
 Do not describe `parcel_verified` as an exact entrance, building centroid, or facility boundary. It proves address-to-parcel consistency and deterministic satellite placement. Campuses, parks, hospitals, stations, and multi-building complexes need an explicit anchor policy such as main entrance, representative building, parcel union, or platform/exit point. Satellite acquisition dates and cadastral update dates can differ, so retain the high-zoom visual QA step.
 
-## Deliverables
+## Deliverables and stopping conditions
 
-Return the SQLite database, exported CSV, overview QA image, detail QA image, counts by verification status, excluded out-of-radius records, and any unresolved records requiring review. When requested, also return an editable PPTX built from the clean satellite base and metadata JSON. Keep source URLs and raw VWorld responses in the database and slide speaker notes for auditability.
+Return the run manifest, SQLite database, exported CSV, overview QA image, detail QA image, clean satellite base, metadata JSON, and editable PPTX when enabled. Keep source URLs and raw VWorld responses in the database and slide speaker notes.
+
+Stop before claiming a final presentation when any plotted record is `not_found` or `review_required`, a required photograph is missing, or the slide render has overlap or clipping. Report the unresolved record instead of silently dropping it.
 
 For code changes, run:
 

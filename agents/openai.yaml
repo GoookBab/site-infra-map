@@ -1,4 +1,4 @@
 interface:
   display_name: "Site Infrastructure Map"
-  short_description: "Verify Korean infrastructure addresses on satellite maps"
-  default_prompt: "Use $site-infra-map to research nearby facilities and build a parcel-verified satellite QA map for my site address."
+  short_description: "Build verified site maps and editable PPT analysis"
+  default_prompt: "Use $site-infra-map to turn my Korean site address and sourced facility list into a parcel-verified database, satellite maps, and an editable PowerPoint analysis."

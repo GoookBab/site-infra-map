@@ -1,0 +1,157 @@
+{
+  "version": 1,
+  "research_date": "2026-09-15",
+  "project": {
+    "slug": "munjeong-court8",
+    "site_name": "문정동 대상지",
+    "site_label": "대상지",
+    "site_address": "서울특별시 송파구 법원로8길 8",
+    "radius_m": 2000
+  },
+  "map": {
+    "overview_zoom": 16,
+    "detail_zoom": 19,
+    "detail_view_radius_m": 180
+  },
+  "presentation": {
+    "output_name": "문정동_지역사회_및_주변현황.pptx",
+    "font_family": "페이퍼로지 7 Bold",
+    "font_basis": "user_request",
+    "section_title": "1.  지역사회 및 주변현황",
+    "school_subtitle": "1.2 문정동 대상지 예상 이용자 현황",
+    "facility_subtitle": "1.3 문정동 대상지 인근 유사시설 현황",
+    "school_map_heading": "반경 2km 이내 학교 현황",
+    "school_table_heading": "이용가능한 인근 학교 학생 현황",
+    "facility_map_heading": "반경 2km 이내 문화·체육시설 현황",
+    "max_schools": 16,
+    "max_facilities": 6
+  },
+  "schools": [
+    {
+      "name": "서울문덕초등학교",
+      "short_name": "문덕초",
+      "school_type": "초",
+      "address": "서울특별시 송파구 송이로34길 60",
+      "student_count": 434,
+      "source_url": "https://www.schoolinfo.go.kr/ei/ss/Pneiss_b01_s0.do?SHL_IDF_CD=bbbbaae3-82ef-4e87-951d-3fb08d4e9932",
+      "longitude": 127.1279628,
+      "latitude": 37.4850521
+    },
+    {
+      "name": "서울문정초등학교",
+      "short_name": "문정초",
+      "school_type": "초",
+      "address": "서울특별시 송파구 문정로5길 20",
+      "student_count": 747,
+      "source_url": "https://www.schoolinfo.go.kr/ei/ss/Pneiss_b01_s0.do?SHL_IDF_CD=98359e79-6df2-4b1e-8f55-259db330439f",
+      "longitude": 127.1292064,
+      "latitude": 37.4890773
+    },
+    {
+      "name": "문정중학교",
+      "short_name": "문정중",
+      "school_type": "중",
+      "address": "서울특별시 송파구 문정로 73",
+      "student_count": 452,
+      "source_url": "https://www.schoolinfo.go.kr/ei/ss/Pneiss_b01_s0.do?SHL_IDF_CD=0b8d5ba7-366d-4840-9566-5e7b18792767",
+      "longitude": 127.1302858,
+      "latitude": 37.4883924
+    },
+    {
+      "name": "문정고등학교",
+      "short_name": "문정고",
+      "school_type": "고",
+      "address": "서울특별시 송파구 송이로34길 62",
+      "student_count": 768,
+      "source_url": "https://www.schoolinfo.go.kr/ei/ss/Pneiss_b01_s0.do?SHL_IDF_CD=fe13bdd6-7a2e-404e-bcae-cef07c1eb1ec",
+      "longitude": 127.1266033,
+      "latitude": 37.4851714
+    }
+  ],
+  "facilities": [
+    {
+      "name": "문정근린공원",
+      "short_name": "문정근린공원",
+      "category": "park",
+      "address": "서울특별시 송파구 문정동 2-5",
+      "source_url": "https://www.songpa.go.kr/www/tourListMain.do?key=3082&sc1=LV0027",
+      "longitude": 127.1342608052,
+      "latitude": 37.4907916710,
+      "image": {
+        "path": "assets/projects/munjeong-court8/munjeong_park.jpg",
+        "url": "https://parks.seoul.go.kr/file/info/view.do?fIdx=1537",
+        "source_url": "https://parks.seoul.go.kr/"
+      }
+    },
+    {
+      "name": "송파청소년센터",
+      "short_name": "송파청소년센터",
+      "category": "public",
+      "address": "서울특별시 송파구 중대로4길 4",
+      "source_url": "https://www.songpa.go.kr/learn/songpacenter/place/intro.do",
+      "longitude": 127.1113012940,
+      "latitude": 37.4897060033,
+      "image": {
+        "path": "assets/projects/munjeong-court8/songpa_youth.jpg",
+        "url": "https://file2.nocutnews.co.kr/newsroom/image/2020/06/30/20200630114253126194_6_710_473.jpg",
+        "source_url": "https://www.nocutnews.co.kr/news/5369882"
+      }
+    },
+    {
+      "name": "송파구배드민턴체육관",
+      "short_name": "배드민턴체육관",
+      "category": "sport",
+      "address": "서울특별시 송파구 문정로 176",
+      "source_url": "https://sports.seoul.go.kr/main/facilities/facilities_view.do?ft_idx=971",
+      "longitude": 127.1382699245,
+      "latitude": 37.4937115238,
+      "image": {
+        "path": "assets/projects/munjeong-court8/badminton.jpg",
+        "url": "https://sports.seoul.go.kr/file/view/FID00000477/0.do",
+        "source_url": "https://sports.seoul.go.kr/main/facilities/facilities_view.do?ft_idx=971"
+      }
+    },
+    {
+      "name": "송파글마루도서관",
+      "short_name": "글마루도서관",
+      "category": "culture",
+      "address": "서울특별시 송파구 충민로 120",
+      "source_url": "https://www.splib.or.kr/spjlib/",
+      "longitude": 127.1304279288,
+      "latitude": 37.4808470414,
+      "image": {
+        "path": "assets/projects/munjeong-court8/geulmaru_library.jpg",
+        "url": "https://cloudfront-ap-northeast-1.images.arcpublishing.com/chosun/O4C6MSUDPMMRP7WLUN57UFL4HE.jpg",
+        "source_url": "https://www.chosun.com/site/data/html_dir/2016/04/06/2016040600122.html"
+      }
+    },
+    {
+      "name": "메가박스 송파파크하비오",
+      "short_name": "메가박스 파크하비오",
+      "category": "culture",
+      "address": "서울특별시 송파구 송파대로 111",
+      "source_url": "https://www.megabox.co.kr/theater/time?brchNo=1381",
+      "longitude": 127.1236527447,
+      "latitude": 37.4792080798,
+      "image": {
+        "path": "assets/projects/munjeong-court8/megabox_parkhabio.jpg",
+        "url": "https://media.triple.guide/triple-cms/c_limit%2Cf_auto%2Ch_1024%2Cw_1024/eb849a70-f90c-43e2-9bb2-047a8031631e.jpeg",
+        "source_url": "https://triple.guide/attractions/"
+      }
+    },
+    {
+      "name": "가든파이브 라이프",
+      "short_name": "가든파이브 라이프",
+      "category": "culture",
+      "address": "서울특별시 송파구 충민로 66",
+      "source_url": "https://www.songpa.go.kr/culture/detailInfo.do?key=5111&rcpp=6&resrceCd=TR0180-1002536&sc1=TR0180",
+      "longitude": 127.1251192339,
+      "latitude": 37.4777135844,
+      "image": {
+        "path": "assets/projects/munjeong-court8/garden5.jpg",
+        "url": "https://www.songpa.go.kr/upload/DATA/resrce/3769e63e-3b29-4453-b2a6-7e612b5074b5DG7AC76G499A806E.jpg",
+        "source_url": "https://www.songpa.go.kr/culture/detailInfo.do?key=5111&rcpp=6&resrceCd=TR0180-1002536&sc1=TR0180"
+      }
+    }
+  ]
+}

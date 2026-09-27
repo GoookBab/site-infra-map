@@ -60,7 +60,7 @@ DB나 출력 CSV에 저장되지 않습니다. 운영 환경에서는 파일 대
 - 위성영상: VWorld WMTS `Satellite` 레이어
 - 장기 로컬 DB 후보: [주소기반산업지원서비스](https://m1.juso.go.kr/addrlink/main.do)의 도로명주소·전자지도 데이터
 
-## 편집 가능한 PowerPoint 예제
+## 기존 문정동 PowerPoint 예제 재현
 
 `scripts/build_reference_style_site_analysis.mjs`는 `현황 분석 및 운영 계획.pptx`의 2단 편집 양식을 기준으로 만든 문정동 대상지 예제입니다.
 
@@ -90,3 +90,25 @@ node scripts/build_reference_style_site_analysis.mjs
 ```
 
 완성 예제는 [`examples/문정동_지역사회_및_주변현황_예제양식.pptx`](examples/%EB%AC%B8%EC%A0%95%EB%8F%99_%EC%A7%80%EC%97%AD%EC%82%AC%ED%9A%8C_%EB%B0%8F_%EC%A3%BC%EB%B3%80%ED%98%84%ED%99%A9_%EC%98%88%EC%A0%9C%EC%96%91%EC%8B%9D.pptx)에서 확인할 수 있습니다.
+
+## 설정 파일 기반 전체 실행
+
+새 프로젝트에서는 Python이나 JavaScript를 수정하지 않고 JSON 설정만 복사해 변경합니다.
+
+```powershell
+Copy-Item examples/munjeong-project.json my-project.json
+python scripts/run_project.py --config my-project.json --validate-only
+python scripts/run_project.py --config my-project.json
+```
+
+한 번의 실행으로 다음 산출물이 새 `outputs/<slug>/<실행시각>/` 폴더에 생성됩니다.
+
+1. 조사 입력 CSV
+2. 주소·필지 검증 SQLite DB
+3. 정규화된 시설 CSV
+4. 반경 개요 및 대상지 상세 QA 지도
+5. 오버레이가 없는 위성지도 원본과 좌표 메타데이터
+6. 실행 manifest
+7. 편집 가능한 2장 PPTX
+
+설정 필드와 이미지 규칙은 [`references/project-config.md`](references/project-config.md)를 참고합니다. PPT 런타임을 사용할 수 없는 환경에서는 `--skip-ppt`로 공간 데이터 단계까지만 실행할 수 있습니다.
